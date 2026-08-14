@@ -12,14 +12,6 @@
     <name>Minecraft Bridge API</name>
     <description>API for integrating Minecraft bridge implementations.</description>
 
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/GatoArtStudio/MinecraftBridgeApi</url>
-        </repository>
-    </distributionManagement>
-
     <properties>
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -1,8 +1,5 @@
-package com.gatoartstudio;
+package com.gatoartstudio.api;
 
-import com.gatoartstudio.core.Bridge;
-
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class BridgeRegistry {
@@ -11,22 +8,25 @@ public final class BridgeRegistry {
     private BridgeRegistry() {
     }
 
-    public static void register(Bridge bridge) throws IllegalStateException {
-        Objects.requireNonNull(bridge, "bridge");
+    public static void register(Bridge instance) throws IllegalStateException {
 
-        if (!BRIDGE.compareAndSet(null, bridge)) {
+        if (instance == null) {
+            throw new NullPointerException("instance is null");
+        }
+
+        if (!BRIDGE.compareAndSet(null, instance)) {
             throw new IllegalStateException("Bridge is already registered!");
         }
     }
 
     public static Bridge get() throws IllegalStateException {
-        Bridge bridge = BRIDGE.get();
+        Bridge result = BRIDGE.get();
 
-        if (bridge == null) {
+        if (result == null) {
             throw new IllegalStateException("Bridge is not registered!");
         }
 
-        return bridge;
+        return result;
     }
 
     public static boolean isAvailable() {

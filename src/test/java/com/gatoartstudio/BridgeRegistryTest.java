@@ -1,6 +1,8 @@
 package com.gatoartstudio;
 
-import com.gatoartstudio.core.Bridge;
+import com.gatoartstudio.api.Bridge;
+import com.gatoartstudio.api.BridgeRegistry;
+import com.gatoartstudio.api.BridgeRequest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +44,15 @@ class BridgeRegistryTest {
     }
 
     @Test
+    void registeredBridgeCanRequestInformation() {
+        BridgeRegistry.register(new TestBridge());
+
+        BridgeRequest request = new BridgeRequest("player", "123");
+
+        assertEquals("player:123", BridgeRegistry.get().requestInformation(request).join());
+    }
+
+    @Test
     void cannotRegisterTwoBridges() {
         BridgeRegistry.register(new TestBridge());
 
@@ -78,6 +89,11 @@ class BridgeRegistryTest {
         @Override
         public CompletableFuture<String> getPlayerName(UUID playerId) {
             return CompletableFuture.completedFuture("player-" + playerId);
+        }
+
+        @Override
+        public CompletableFuture<String> requestInformation(BridgeRequest request) {
+            return CompletableFuture.completedFuture(request.type() + ":" + request.payload());
         }
     }
 }

@@ -1,12 +1,14 @@
 package com.gatoartstudio.api;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public interface Bridge {
-    CompletableFuture<String> ping();
+    @NotNull CompletableFuture<String> ping();
 
-    CompletableFuture<String> getPlayerName(UUID playerId);
+    @NotNull CompletableFuture<String> getPlayerName(@NotNull UUID playerId);
 
-    CompletableFuture<BridgeResponse> requestInformation(BridgeRequest request);
+    @NotNull CompletableFuture<BridgeResponse> requestInformation(@NotNull BridgeRequest request);
 }

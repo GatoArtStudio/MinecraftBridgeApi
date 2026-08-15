@@ -1,5 +1,7 @@
 package com.gatoartstudio.api;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class BridgeRegistry {
@@ -8,7 +10,8 @@ public final class BridgeRegistry {
     private BridgeRegistry() {
     }
 
-    public static void register(Bridge instance) throws IllegalStateException {
+    public static void register(@NotNull Bridge instance)
+            throws IllegalStateException, NullPointerException {
 
         if (instance == null) {
             throw new NullPointerException("instance is null");
@@ -19,7 +22,7 @@ public final class BridgeRegistry {
         }
     }
 
-    public static Bridge get() throws IllegalStateException {
+    public static @NotNull Bridge get() throws IllegalStateException {
         Bridge result = BRIDGE.get();
 
         if (result == null) {

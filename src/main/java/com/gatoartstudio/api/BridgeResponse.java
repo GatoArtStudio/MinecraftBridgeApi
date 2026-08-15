@@ -1,6 +1,13 @@
 package com.gatoartstudio.api;
 
-public record BridgeResponse(String response, boolean success, String errorMessage) {
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public record BridgeResponse(
+        @Nullable String response,
+        boolean success,
+        @Nullable String errorMessage
+) {
     public BridgeResponse {
         if (success && errorMessage != null && !errorMessage.isBlank()) {
             throw new IllegalArgumentException("A successful response cannot contain an error message");
@@ -11,11 +18,11 @@ public record BridgeResponse(String response, boolean success, String errorMessa
         }
     }
 
-    public static BridgeResponse success(String response) {
+    public static @NotNull BridgeResponse success(@Nullable String response) {
         return new BridgeResponse(response, true, null);
     }
 
-    public static BridgeResponse failure(String errorMessage) {
+    public static @NotNull BridgeResponse failure(@NotNull String errorMessage) {
         return new BridgeResponse(null, false, errorMessage);
     }
 }

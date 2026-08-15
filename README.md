@@ -10,6 +10,8 @@ La librería no depende de Fabric, Forge, NeoForge, Bukkit, Spigot, Paper ni de 
 - Maven o Gradle para instalar la dependencia.
 - Para publicar versiones nuevas mediante JitPack, el repositorio debe ser público en GitHub.
 
+La API utiliza las anotaciones `@NotNull` y `@Nullable` de JetBrains para documentar valores obligatorios y opcionales. La dependencia se incluye transitivamente al instalar la librería.
+
 ## Instalación
 
 La librería se distribuye mediante [JitPack](https://jitpack.io/).
@@ -194,6 +196,54 @@ BridgeResponse.failure("No se encontró el jugador");
 ```
 
 Una respuesta exitosa no puede tener mensaje de error y una respuesta fallida debe tenerlo.
+
+## Eventos genéricos
+
+El sistema de eventos no depende de clases concretas del mod o plugin receptor. Los eventos se identifican mediante un `type`, transportan un `payload` en formato `String` y contienen un timestamp en milisegundos.
+
+Registrar un bus global:
+
+```java
+import com.gatoartstudio.api.DefaultEventBus;
+import com.gatoartstudio.api.EventBusRegistry;
+
+EventBusRegistry.register(new DefaultEventBus());
+```
+
+Suscribirse a un tipo de evento:
+
+```java
+import com.gatoartstudio.api.EventBusRegistry;
+
+var subscription = EventBusRegistry.get().subscribe(
+        "minecraft.player.joined",
+        event -> System.out.println(event.payload())
+);
+```
+
+Emitir un evento:
+
+```java
+import com.gatoartstudio.api.BridgeEvent;
+import com.gatoartstudio.api.EventBusRegistry;
+
+EventBusRegistry.get().emit(
+        BridgeEvent.now(
+                "minecraft.player.joined",
+                "{\"playerId\":\"uuid\",\"name\":\"Steve\"}"
+        )
+);
+```
+
+Cancelar una suscripción:
+
+```java
+subscription.unsubscribe();
+```
+
+Los listeners se ejecutan de forma síncrona. Si un listener lanza una excepción, los demás listeners continúan ejecutándose. Los errores pueden personalizarse mediante `EventErrorHandler` al crear `DefaultEventBus`.
+
+Las excepciones de validación y de registro se indican en las firmas mediante `throws`. Las operaciones que devuelven `CompletableFuture` pueden completar el future excepcionalmente cuando ocurre un error asíncrono.
 
 ## Pruebas
 

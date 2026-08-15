@@ -1,4 +1,6 @@
 package com.gatoartstudio.api;
 
-public record BridgeRequest(String type, String payload) {
+import org.jetbrains.annotations.NotNull;
+
+public record BridgeRequest(@NotNull String type, @NotNull String payload) {
 }

@@ -1,5 +1,10 @@
-package com.gatoartstudio.api;
+package com.gatoartstudio.core;
 
+import com.gatoartstudio.api.BridgeEvent;
+import com.gatoartstudio.api.EventBus;
+import com.gatoartstudio.api.EventErrorHandler;
+import com.gatoartstudio.api.EventHandler;
+import com.gatoartstudio.api.EventSubscription;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -22,7 +27,7 @@ public final class DefaultEventBus implements EventBus {
     @Override
     public @NotNull EventSubscription subscribe(@NotNull String eventType, @NotNull EventHandler handler)
             throws IllegalArgumentException, NullPointerException {
-        if (eventType == null || eventType.isBlank()) {
+        if (eventType.isBlank()) {
             throw new IllegalArgumentException("Event type cannot be blank");
         }
 

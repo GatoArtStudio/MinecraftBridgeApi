@@ -4,6 +4,7 @@ import com.gatoartstudio.api.Bridge;
 import com.gatoartstudio.api.BridgeRegistry;
 import com.gatoartstudio.api.BridgeRequest;
 import com.gatoartstudio.api.BridgeResponse;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -88,17 +89,17 @@ class BridgeRegistryTest {
 
     private static final class TestBridge implements Bridge {
         @Override
-        public CompletableFuture<String> ping() {
+        public @NotNull CompletableFuture<String> ping() {
             return CompletableFuture.completedFuture("pong");
         }
 
         @Override
-        public CompletableFuture<String> getPlayerName(UUID playerId) {
+        public @NotNull CompletableFuture<String> getPlayerName(@NotNull UUID playerId) {
             return CompletableFuture.completedFuture("player-" + playerId);
         }
 
         @Override
-        public CompletableFuture<BridgeResponse> requestInformation(BridgeRequest request) {
+        public @NotNull CompletableFuture<BridgeResponse> requestInformation(@NotNull BridgeRequest request) {
             return CompletableFuture.completedFuture(
                     BridgeResponse.success(request.type() + ":" + request.payload())
             );

@@ -1,10 +1,10 @@
 package com.gatoartstudio;
 
 import com.gatoartstudio.api.BridgeEvent;
-import com.gatoartstudio.api.DefaultEventBus;
 import com.gatoartstudio.api.EventBus;
 import com.gatoartstudio.api.EventBusRegistry;
 import com.gatoartstudio.api.EventSubscription;
+import com.gatoartstudio.core.DefaultEventBus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

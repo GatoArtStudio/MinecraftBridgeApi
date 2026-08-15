@@ -2,6 +2,7 @@ package com.gatoartstudio.api;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public final class BridgeRegistry {
@@ -12,10 +13,7 @@ public final class BridgeRegistry {
 
     public static void register(@NotNull Bridge instance)
             throws IllegalStateException, NullPointerException {
-
-        if (instance == null) {
-            throw new NullPointerException("instance is null");
-        }
+        Objects.requireNonNull(instance, "instance");
 
         if (!BRIDGE.compareAndSet(null, instance)) {
             throw new IllegalStateException("Bridge is already registered!");

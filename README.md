@@ -35,7 +35,7 @@ Añade la dependencia:
 <dependency>
     <groupId>com.github.GatoArtStudio</groupId>
     <artifactId>MinecraftBridgeApi</artifactId>
-    <version>v3.0.0</version>
+        <version>v3.2.0</version>
 </dependency>
 ```
 
@@ -52,7 +52,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.GatoArtStudio:MinecraftBridgeApi:v3.0.0")
+    implementation("com.github.GatoArtStudio:MinecraftBridgeApi:v3.2.0")
 }
 ```
 
@@ -69,8 +69,8 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.GatoArtStudio:MinecraftBridgeApi:v3.0.0")
-    include(implementation("com.github.GatoArtStudio:MinecraftBridgeApi:v3.0.0"))
+    implementation("com.github.GatoArtStudio:MinecraftBridgeApi:v3.2.0")
+    include(implementation("com.github.GatoArtStudio:MinecraftBridgeApi:v3.2.0"))
 }
 ```
 
@@ -204,8 +204,8 @@ El sistema de eventos no depende de clases concretas del mod o plugin receptor. 
 Registrar un bus global:
 
 ```java
-import com.gatoartstudio.api.DefaultEventBus;
 import com.gatoartstudio.api.EventBusRegistry;
+import com.gatoartstudio.core.DefaultEventBus;
 
 EventBusRegistry.register(new DefaultEventBus());
 ```
@@ -255,9 +255,9 @@ mvn clean verify
 
 ## Versiones
 
-La versión estable actual es `v3.0.0`.
+La versión estable actual es `v3.2.0`.
 
-Las versiones se publican mediante tags de Git y son construidas por JitPack. Para utilizar otra versión, reemplaza `v3.0.0` por el tag correspondiente.
+Las versiones se publican mediante tags de Git y son construidas por JitPack. Para utilizar otra versión, reemplaza `v3.2.0` por el tag correspondiente.
 
 Puedes consultar todas las versiones disponibles y el estado de sus compilaciones en [JitPack](https://jitpack.io/#GatoArtStudio/MinecraftBridgeApi).
 

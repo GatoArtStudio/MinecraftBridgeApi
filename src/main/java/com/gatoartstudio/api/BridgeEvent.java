@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public record BridgeEvent(@NotNull String type, @NotNull String payload, long timestamp) {
     public BridgeEvent {
-        if (type == null || type.isBlank()) {
+        if (type.isBlank()) {
             throw new IllegalArgumentException("Event type cannot be blank");
         }
 

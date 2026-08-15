@@ -11,4 +11,9 @@ public interface Bridge {
     @NotNull CompletableFuture<String> getPlayerName(@NotNull UUID playerId);
 
     @NotNull CompletableFuture<BridgeResponse> requestInformation(@NotNull BridgeRequest request);
+
+    @NotNull EventSubscription subscribe(@NotNull String eventType, @NotNull EventHandler handler)
+            throws IllegalArgumentException, NullPointerException;
+
+    void emit(@NotNull BridgeEvent event) throws NullPointerException;
 }

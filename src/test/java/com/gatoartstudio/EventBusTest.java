@@ -2,10 +2,8 @@ package com.gatoartstudio;
 
 import com.gatoartstudio.api.BridgeEvent;
 import com.gatoartstudio.api.EventBus;
-import com.gatoartstudio.api.EventBusRegistry;
 import com.gatoartstudio.api.EventSubscription;
 import com.gatoartstudio.core.DefaultEventBus;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -17,11 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class EventBusTest {
-    @AfterEach
-    void cleanRegistry() {
-        EventBusRegistry.unregister();
-    }
-
     @Test
     void emitsEventOnlyToSubscribersOfTheSameType() {
         EventBus eventBus = new DefaultEventBus();

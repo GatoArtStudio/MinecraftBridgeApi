@@ -1,15 +1,20 @@
 package com.gatoartstudio;
 
 import com.gatoartstudio.api.Bridge;
+import com.gatoartstudio.api.BridgeEvent;
 import com.gatoartstudio.api.BridgeRegistry;
 import com.gatoartstudio.api.BridgeRequest;
 import com.gatoartstudio.api.BridgeResponse;
+import com.gatoartstudio.api.EventHandler;
+import com.gatoartstudio.api.EventSubscription;
+import com.gatoartstudio.core.DefaultEventBus;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -60,6 +65,18 @@ class BridgeRegistryTest {
     }
 
     @Test
+    void registeredBridgeCanSubscribeAndEmitEvents() {
+        TestBridge bridge = new TestBridge();
+        BridgeRegistry.register(bridge);
+        AtomicReference<String> received = new AtomicReference<>();
+
+        bridge.subscribe("player.joined", event -> received.set(event.payload()));
+        bridge.emit(BridgeEvent.now("player.joined", "Steve"));
+
+        assertEquals("Steve", received.get());
+    }
+
+    @Test
     void cannotRegisterTwoBridges() {
         BridgeRegistry.register(new TestBridge());
 
@@ -88,6 +105,8 @@ class BridgeRegistryTest {
     }
 
     private static final class TestBridge implements Bridge {
+        private final DefaultEventBus eventBus = new DefaultEventBus();
+
         @Override
         public @NotNull CompletableFuture<String> ping() {
             return CompletableFuture.completedFuture("pong");
@@ -103,6 +122,19 @@ class BridgeRegistryTest {
             return CompletableFuture.completedFuture(
                     BridgeResponse.success(request.type() + ":" + request.payload())
             );
+        }
+
+        @Override
+        public @NotNull EventSubscription subscribe(
+                @NotNull String eventType,
+                @NotNull EventHandler handler
+        ) {
+            return eventBus.subscribe(eventType, handler);
+        }
+
+        @Override
+        public void emit(@NotNull BridgeEvent event) {
+            eventBus.emit(event);
         }
     }
 }

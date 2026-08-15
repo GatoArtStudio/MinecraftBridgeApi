@@ -35,7 +35,7 @@ Añade la dependencia:
 <dependency>
     <groupId>com.github.GatoArtStudio</groupId>
     <artifactId>MinecraftBridgeApi</artifactId>
-        <version>v3.2.0</version>
+        <version>v4.0.0</version>
 </dependency>
 ```
 
@@ -52,7 +52,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.GatoArtStudio:MinecraftBridgeApi:v3.2.0")
+    implementation("com.github.GatoArtStudio:MinecraftBridgeApi:v4.0.0")
 }
 ```
 
@@ -69,8 +69,8 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.GatoArtStudio:MinecraftBridgeApi:v3.2.0")
-    include(implementation("com.github.GatoArtStudio:MinecraftBridgeApi:v3.2.0"))
+    implementation("com.github.GatoArtStudio:MinecraftBridgeApi:v4.0.0")
+    include(implementation("com.github.GatoArtStudio:MinecraftBridgeApi:v4.0.0"))
 }
 ```
 
@@ -201,21 +201,19 @@ Una respuesta exitosa no puede tener mensaje de error y una respuesta fallida de
 
 El sistema de eventos no depende de clases concretas del mod o plugin receptor. Los eventos se identifican mediante un `type`, transportan un `payload` en formato `String` y contienen un timestamp en milisegundos.
 
-Registrar un bus global:
+Los eventos se registran a través de la implementación del bridge:
 
 ```java
-import com.gatoartstudio.api.EventBusRegistry;
-import com.gatoartstudio.core.DefaultEventBus;
+import com.gatoartstudio.api.Bridge;
+import com.gatoartstudio.api.BridgeRegistry;
 
-EventBusRegistry.register(new DefaultEventBus());
+Bridge bridge = BridgeRegistry.get();
 ```
 
 Suscribirse a un tipo de evento:
 
 ```java
-import com.gatoartstudio.api.EventBusRegistry;
-
-var subscription = EventBusRegistry.get().subscribe(
+var subscription = bridge.subscribe(
         "minecraft.player.joined",
         event -> System.out.println(event.payload())
 );
@@ -225,9 +223,8 @@ Emitir un evento:
 
 ```java
 import com.gatoartstudio.api.BridgeEvent;
-import com.gatoartstudio.api.EventBusRegistry;
 
-EventBusRegistry.get().emit(
+bridge.emit(
         BridgeEvent.now(
                 "minecraft.player.joined",
                 "{\"playerId\":\"uuid\",\"name\":\"Steve\"}"
@@ -255,9 +252,9 @@ mvn clean verify
 
 ## Versiones
 
-La versión estable actual es `v3.2.0`.
+La versión estable actual es `v4.0.0`.
 
-Las versiones se publican mediante tags de Git y son construidas por JitPack. Para utilizar otra versión, reemplaza `v3.2.0` por el tag correspondiente.
+Las versiones se publican mediante tags de Git y son construidas por JitPack. Para utilizar otra versión, reemplaza `v4.0.0` por el tag correspondiente.
 
 Puedes consultar todas las versiones disponibles y el estado de sus compilaciones en [JitPack](https://jitpack.io/#GatoArtStudio/MinecraftBridgeApi).
 

@@ -8,5 +8,5 @@ public interface Bridge {
 
     CompletableFuture<String> getPlayerName(UUID playerId);
 
-    CompletableFuture<String> requestInformation(BridgeRequest request);
+    CompletableFuture<BridgeResponse> requestInformation(BridgeRequest request);
 }

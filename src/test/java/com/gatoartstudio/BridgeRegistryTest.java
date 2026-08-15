@@ -3,6 +3,7 @@ package com.gatoartstudio;
 import com.gatoartstudio.api.Bridge;
 import com.gatoartstudio.api.BridgeRegistry;
 import com.gatoartstudio.api.BridgeRequest;
+import com.gatoartstudio.api.BridgeResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +12,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,7 +51,11 @@ class BridgeRegistryTest {
 
         BridgeRequest request = new BridgeRequest("player", "123");
 
-        assertEquals("player:123", BridgeRegistry.get().requestInformation(request).join());
+        BridgeResponse response = BridgeRegistry.get().requestInformation(request).join();
+
+        assertTrue(response.success());
+        assertEquals("player:123", response.response());
+        assertNull(response.errorMessage());
     }
 
     @Test
@@ -92,8 +98,10 @@ class BridgeRegistryTest {
         }
 
         @Override
-        public CompletableFuture<String> requestInformation(BridgeRequest request) {
-            return CompletableFuture.completedFuture(request.type() + ":" + request.payload());
+        public CompletableFuture<BridgeResponse> requestInformation(BridgeRequest request) {
+            return CompletableFuture.completedFuture(
+                    BridgeResponse.success(request.type() + ":" + request.payload())
+            );
         }
     }
 }

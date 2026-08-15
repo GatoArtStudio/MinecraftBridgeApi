@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.gatoartstudio</groupId>
-    <artifactId>minecraft-bridge-api</artifactId>
-    <version>1.0.2</version>
+    <artifactId>MinecraftBridgeApi</artifactId>
+    <version>1.0.3</version>
     <packaging>jar</packaging>
 
     <name>Minecraft Bridge API</name>

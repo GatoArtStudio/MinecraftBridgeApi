@@ -201,12 +201,65 @@ Una respuesta exitosa no puede tener mensaje de error y una respuesta fallida de
 
 El sistema de eventos no depende de clases concretas del mod o plugin receptor. Los eventos se identifican mediante un `type`, transportan un `payload` en formato `String` y contienen un timestamp en milisegundos.
 
-Los eventos se registran a través de la implementación del bridge:
+Cada implementación concreta del bridge puede utilizar `DefaultEventBus` para distribuir los eventos que recibe o genera:
 
 ```java
 import com.gatoartstudio.api.Bridge;
+import com.gatoartstudio.api.BridgeEvent;
 import com.gatoartstudio.api.BridgeRegistry;
+import com.gatoartstudio.api.BridgeRequest;
+import com.gatoartstudio.api.BridgeResponse;
+import com.gatoartstudio.api.EventHandler;
+import com.gatoartstudio.api.EventSubscription;
+import com.gatoartstudio.core.DefaultEventBus;
 
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
+public final class MyBridge implements Bridge {
+    private final DefaultEventBus eventBus = new DefaultEventBus();
+
+    @Override
+    public CompletableFuture<String> ping() {
+        return CompletableFuture.completedFuture("pong");
+    }
+
+    @Override
+    public CompletableFuture<String> getPlayerName(UUID playerId) {
+        return CompletableFuture.completedFuture("Steve");
+    }
+
+    @Override
+    public CompletableFuture<BridgeResponse> requestInformation(
+            BridgeRequest request
+    ) {
+        return CompletableFuture.completedFuture(
+                BridgeResponse.success("Respuesta para: " + request.type())
+        );
+    }
+
+    @Override
+    public EventSubscription subscribe(
+            String eventType,
+            EventHandler handler
+    ) {
+        return eventBus.subscribe(eventType, handler);
+    }
+
+    @Override
+    public void emit(BridgeEvent event) {
+        eventBus.emit(event);
+    }
+}
+
+BridgeRegistry.register(new MyBridge());
+```
+
+`DefaultEventBus` es un distribuidor local. La implementación concreta del bridge debe encargarse de transportar los eventos entre mods o plugins cuando sea necesario.
+
+Obtener la implementación registrada:
+
+```java
 Bridge bridge = BridgeRegistry.get();
 ```
 
